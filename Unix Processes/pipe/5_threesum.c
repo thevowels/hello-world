@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:07:17 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/16 00:08:24 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:11:02 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int main(void)
 		close(pipe1[0]);
 
 		sum = ft_sum(arr,0,chunks);
-		// printf("First chunk starts at %d and ends at %d  with partial sum:	 %d\n", 0, end, sum);
+		printf("First chunk starts at %d and ends at %d  with partial sum:	 %d\n", 0, chunks, sum);
 
 		if(write(pipe1[1], &sum, sizeof(sum)) <= 0)
 		{
@@ -97,7 +97,7 @@ int main(void)
 			//close read end of pipe
 			close(pipe2[0]);
 			sum = ft_sum(arr,chunks, chunks * 2);
-			// printf("Second chunk starts at %d and ends at %d with partial sum:	 %d \n", chunks *2, end, sum);
+			printf("Second chunk starts at %d and ends at %d with partial sum:	 %d \n", chunks, chunks *2, sum);
 
 			if(write(pipe2[1], &sum, sizeof(sum)) <= 0)
 			{
@@ -116,7 +116,7 @@ int main(void)
 			//closing  write end of pipes
 			close(pipe1[1]);
 			close(pipe2[1]);
-			// printf("Third chunk starts at %d and ends at %d with partial sum: 	%d\n", chunks *3, end, sum);
+			printf("Third chunk starts at %d and ends at %d with partial sum: 	%d\n", chunks *2, arrSize, sum);
 
 			if(read(pipe1[0], &sum1, sizeof(int)) <= 0 ||
 				read(pipe2[0], &sum2, sizeof(int)) <= 0)
