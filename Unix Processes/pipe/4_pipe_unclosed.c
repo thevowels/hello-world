@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   3_pipesum.c                                        :+:      :+:    :+:   */
+/*   4_pipe_unclosed.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 21:26:33 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/15 21:43:41 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/15 21:55:21 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int	main(void)
 		close(fd[0]);
 		// write(fd[1], &sum, sizeof(int));
 		close(fd[1]);
-		sleep(2);
-
 	}
 	else
 	{
@@ -67,7 +65,7 @@ int	main(void)
 		}
 		printf("Partial sum from parent : %d\n", sum);
 		int tmp;
-		close(fd[1]);
+		// close(fd[1]);
 		if( read(fd[0], &tmp,sizeof(int)) <= 0)
 		{
 			printf("Error occured while reading.\n");
@@ -80,3 +78,14 @@ int	main(void)
 	}
 	return (0);
 }
+
+/*
+
+	Take a look at line (70) I commented out closing the write end of the pipe on parent process
+	This caued the parent process to wait there forever as it is trying to read.
+	it cannot read so its waiting for a call from kernel.
+	The kernel is checking is there any fd opened for write operation.
+	So thers is an opened write fd there on the parent process but kernel just think the operation
+	is not complete yet and doesn't send signal to the read operation.
+	This caused the program to stuck there forever.
+*/
