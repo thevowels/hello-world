@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 21:26:33 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/15 21:43:41 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:06:34 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(void)
 {
 	int pid;
 	int fd[2];
-	int arr[] = {1, 2, 3, 4, 5, 6};
+	int arr[] = {1, 2, 3, 4, 5, 6, 100};
 	int arrSize;
 	int sum;
 	int start;
@@ -51,7 +51,7 @@ int	main(void)
 		}
 		printf("Partial sum from children : %d\n", sum);
 		close(fd[0]);
-		// write(fd[1], &sum, sizeof(int));
+		write(fd[1], &sum, sizeof(int));
 		close(fd[1]);
 		sleep(2);
 
