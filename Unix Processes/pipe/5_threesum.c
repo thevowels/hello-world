@@ -6,7 +6,7 @@
 /*   By: aphyo-ht <aphyo-ht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 22:07:17 by aphyo-ht          #+#    #+#             */
-/*   Updated: 2025/10/15 23:55:14 by aphyo-ht         ###   ########.fr       */
+/*   Updated: 2025/10/16 00:01:59 by aphyo-ht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 
 int main(void)
 {
-	int arr[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+	int arr[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	int arrSize;
-	
+	int start;
+	int end;
 	arrSize = sizeof(arr) / sizeof(int);
 	if(arrSize < 3)
 	{
@@ -47,17 +48,17 @@ int main(void)
 	{
 		// This is child process
 		close(pipe1[0]);
-		int start1 = 0;
-		int end1 = chunks;
+		start = 0;
+		end = chunks;
 
 		int sum;
 		sum = 0;
-		while(start1 < end1)
+		while(start < end)
 		{
-			sum += arr[start1];
-			start1++;
+			sum += arr[start];
+			start++;
 		}
-		printf("First chunk starts at %d and ends at %d  with partial sum:	 %d\n", 0, end1, sum);
+		printf("First chunk starts at %d and ends at %d  with partial sum:	 %d\n", 0, end, sum);
 
 		if(write(pipe1[1], &sum, sizeof(sum)) <= 0)
 		{
@@ -91,16 +92,16 @@ int main(void)
 
 			//close read end of pipe
 			close(pipe2[0]);
-			int start2 = chunks;
-			int end2 = chunks * 2;
+			start = chunks;
+			end = chunks * 2;
 			int sum = 0;
 
-			while(start2 < end2)
+			while(start < end)
 			{
-				sum += arr[start2];
-				start2++;
+				sum += arr[start];
+				start++;
 			}
-			printf("Second chunk starts at %d and ends at %d with partial sum:	 %d \n", chunks *2, end2, sum);
+			printf("Second chunk starts at %d and ends at %d with partial sum:	 %d \n", chunks *2, end, sum);
 
 			if(write(pipe2[1], &sum, sizeof(sum)) <= 0)
 			{
@@ -112,8 +113,8 @@ int main(void)
 		}
 		else
 		{
-			int start3 = chunks *2;
-			int end3 = arrSize;
+			start = chunks *2;
+			end = arrSize;
 			int sum = 0;
 			int sum1;
 			int sum2;
@@ -121,12 +122,12 @@ int main(void)
 			//closing  write end of pipes
 			close(pipe1[1]);
 			close(pipe2[1]);
-			while(start3 < end3)
+			while(start < end)
 			{
-				sum += arr[start3];
-				start3++;
+				sum += arr[start];
+				start++;
 			}
-			printf("Third chunk starts at %d and ends at %d with partial sum: 	%d\n", chunks *3, end3, sum);
+			printf("Third chunk starts at %d and ends at %d with partial sum: 	%d\n", chunks *3, end, sum);
 
 			if(read(pipe1[0], &sum1, sizeof(int)) <= 0 ||
 				read(pipe2[0], &sum2, sizeof(int)) <= 0)
